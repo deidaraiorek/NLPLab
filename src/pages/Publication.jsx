@@ -37,8 +37,12 @@ const Publication = () => {
   }, {});
 
   return (
-    <div className="container mx-auto p-4 bg-[#f5f5f5]">
-      <div className="mb-4">
+    <div className="container rounded-lg mx-auto p-4 bg-[#fff]">
+      <h1 className=" text-center text-4xl  text-[#005a9b] font-bold p-4 border-b-4">
+        Publications
+      </h1>
+
+      <div className="my-4">
         <label htmlFor="year" className="mr-2">
           Filter by Year:
         </label>

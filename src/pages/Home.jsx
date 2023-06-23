@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const HomePage = () => {
   return (
-    <div className="bg-[#f5f5f5] min-h-screen">
+    <div className="bg-[#fff] min-h-screen">
       <div className="container mx-auto py-10 px-4 md:px-8 lg:px-16 xl:px-20">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
