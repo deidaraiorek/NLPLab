@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import Header from "./components/Header";
 import "./index.css";
 import Publication from "./pages/Publication";
+import People from "./pages/People";
+import Blog from "./pages/Blog";
 
 function App() {
   return (
@@ -12,7 +14,9 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />{" "}
-          <Route path="/research" element={<Publication />} />{" "}
+          <Route path="/publications" element={<Publication />} />
+          <Route path="/people" element={<People />} />
+          <Route path="/blogs" element={<Blog />} />
           {/* Define the component for the home route */}
           {/* Other routes */}
         </Routes>

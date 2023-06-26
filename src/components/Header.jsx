@@ -39,7 +39,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="bg-[#ffffff] flex items-center justify-between py-4">
+      <header className="bg-[#f5f5f5] flex items-center justify-between py-4">
         <a className="flex items-center ml-4 hover:cursor-pointer" href="/">
           <img
             src={LabLogo}
