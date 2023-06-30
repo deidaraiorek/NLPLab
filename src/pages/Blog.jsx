@@ -1,6 +1,7 @@
 import React from "react";
 import BlogCard from "../components/BlogCard";
-import PDFFILE from "../assets/Using_AI_tools_experience.pdf";
+import PDFFILE from "../assets/documents/Doc.pdf";
+import { Document, Page } from "react-pdf";
 
 const Blog = () => {
   const blogData = [
@@ -19,14 +20,20 @@ const Blog = () => {
   return (
     <div>
       <h1>Lab Blog</h1>
-      {blogData.map((blog) => (
+      <a href={PDFFILE} target="_blank" rel="noreferrer">
+        ddd
+      </a>
+      {/* <Document file={PDFFILE}>
+        <Page pageNumber={1} />
+      </Document> */}
+      {/* {blogData.map((blog) => (
         <BlogCard
           key={blog.title}
           title={blog.title}
           imageSrc={blog.imageSrc}
           pdfUrl={blog.pdfUrl}
         />
-      ))}
+      ))} */}
     </div>
   );
 };
