@@ -9,9 +9,9 @@ const BlogCard = ({ title, imageSrc, pdfUrl }) => {
     <div className="blog-card">
       {imageSrc && <img src={imageSrc} alt={title} className="card-image" />}
       <h3 className="card-title">{title}</h3>
-      <button className="download-button" onClick={handleDownload}>
+      <a href={pdfUrl} target="_blank">
         Download PDF
-      </button>
+      </a>
     </div>
   );
 };
