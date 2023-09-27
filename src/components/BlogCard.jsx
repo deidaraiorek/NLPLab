@@ -1,17 +1,17 @@
 import React from "react";
 
 const BlogCard = ({ title, imageSrc, pdfUrl }) => {
-  const handleDownload = () => {
-    window.open(pdfUrl, "_blank");
-  };
-
   return (
-    <div className="blog-card">
-      {imageSrc && <img src={imageSrc} alt={title} className="card-image" />}
-      <h3 className="card-title">{title}</h3>
-      <a href={pdfUrl} target="_blank">
-        Download PDF
-      </a>
+    <div
+      className={`cursor-pointer h-40 bg-cover bg-center ${
+        imageSrc ? "bg-no-repeat" : "bg-gray-50"
+      } flex items-center justify-center relative border-y border-gray-200`}
+      style={imageSrc ? { backgroundImage: `url(${imageSrc})` } : {}}
+      onClick={() => window.open(pdfUrl, "_blank")}
+    >
+      <div className="p-4 text-[#003366] text-lg absolute border border-gray-200 rounded-lg">
+        {title && <h2 className="text-xl">{title}</h2>}
+      </div>
     </div>
   );
 };
