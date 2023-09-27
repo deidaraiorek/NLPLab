@@ -6,9 +6,8 @@ import { Document, Page } from "react-pdf";
 const Blog = () => {
   const blogData = [
     {
-      title: "Research Study 1",
-      imageSrc: "path/to/image1.jpg",
-      pdfUrl: PDFFILE,
+      title: "Using AI tools to generate media asset for lab’s website",
+      pdfUrl: "https://nlplab123456789.s3.amazonaws.com/Doc.pdf",
     },
     {
       title: "Research Study 2",
@@ -18,22 +17,22 @@ const Blog = () => {
   ];
 
   return (
-    <div>
-      <h1>Lab Blog</h1>
-      <a href={PDFFILE} target="_blank" rel="noreferrer">
-        ddd
-      </a>
-      {/* <Document file={PDFFILE}>
-        <Page pageNumber={1} />
-      </Document> */}
-      {/* {blogData.map((blog) => (
-        <BlogCard
-          key={blog.title}
-          title={blog.title}
-          imageSrc={blog.imageSrc}
-          pdfUrl={blog.pdfUrl}
-        />
-      ))} */}
+    <div className="container rounded-lg mx-auto p-4 bg-[#fff]">
+      <div>
+        <h1 className=" text-center text-4xl  text-[#005a9b] font-bold p-4 border-b-4 ">
+          Lab's articles
+        </h1>
+      </div>
+      <div className="flex flex-col p-4 space-y-4">
+        {blogData.map((blog) => (
+          <BlogCard
+            key={blog.title}
+            title={blog.title}
+            imageSrc={blog.imageSrc}
+            pdfUrl={blog.pdfUrl}
+          />
+        ))}
+      </div>
     </div>
   );
 };
