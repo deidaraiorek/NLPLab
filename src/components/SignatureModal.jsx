@@ -39,7 +39,7 @@ const [userEmail, setUserEmail] = useState("");
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/upload-signed-agreement",
+        `${process.env.REACT_APP_API_URL}/contract/upload-signed-agreement`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
