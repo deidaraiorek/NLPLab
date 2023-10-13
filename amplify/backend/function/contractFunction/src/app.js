@@ -1,45 +1,40 @@
-const express = require("express");
-const multer = require("multer");
-const cors = require("cors");
-const AWS = require("aws-sdk");
-const { SESClient } = require("@aws-sdk/client-ses");
-const { SendEmailCommand } = require("@aws-sdk/client-ses");
-const nodemailer = require("nodemailer");
-const { v4: uuidv4 } = require("uuid"); // for generating unique IDs
-require("dotenv").config();
-
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: "us-east-1", // Replace with your desired AWS region
-});
-const sesClient = new SESClient({
-  region: "us-east-1", // Replace with your AWS SES region
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  },
-});
-
-const s3 = new AWS.S3();
+const express = require('express');
+const bodyParser = require('body-parser');
+const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
+const multer = require('multer');
+const AWS = require('aws-sdk');
+const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
+const nodemailer = require('nodemailer');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-app.use(cors());
+app.use(bodyParser.json());
+app.use(awsServerlessExpressMiddleware.eventContext());
+
+// Enable CORS for all methods
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
+});
+
+// AWS Setup
+AWS.config.update({ region: 'us-east-1' });
+
+const sesClient = new SESClient({ region: 'us-east-1' });
+const s3 = new AWS.S3();
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
+const CONTRACT_REQUESTS_TABLE_NAME = 'hit';
+
 app.use(express.json());
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 5 * 1024 * 1024, // keep images size < 5 MB
+    fileSize: 5 * 1024 * 1024,
   },
 });
 
-
-
-const dynamoDB = new AWS.DynamoDB.DocumentClient();
-
-const CONTRACT_REQUESTS_TABLE_NAME = "hit"; // Replace with your DynamoDB table name
-
-app.post("/api/upload-signed-agreement", upload.single("file"), (req, res) => {
+app.post('/contract/upload-signed-agreement', upload.single('file'), (req, res) => {
   const params = {
     Bucket: "mangutget",
     Key: `${Date.now()}-${req.file.originalname}`,
@@ -53,8 +48,7 @@ app.post("/api/upload-signed-agreement", upload.single("file"), (req, res) => {
       return res.status(500).send(err);
     }
     try {
-      // Store the request details in DynamoDB
-      const requestId = uuidv4(); // Generate a unique request ID
+      const requestId = uuidv4();
       const request = {
         id: requestId,
         fileName: req.file.originalname,
@@ -63,15 +57,13 @@ app.post("/api/upload-signed-agreement", upload.single("file"), (req, res) => {
         userEmail: req.body.userEmail,
         title: req.body.research,
         link: req.body.researchLink,
-        
-        // Add other request details as needed (e.g., user name, email, status).
       };
-
 
       const putParams = {
-        TableName:CONTRACT_REQUESTS_TABLE_NAME,
+        TableName: CONTRACT_REQUESTS_TABLE_NAME,
         Item: request,
       };
+
       dynamoDB.put(putParams, function(err, data) {
         if (err) {
           console.error("Error storing contract request:", err);
@@ -81,10 +73,6 @@ app.post("/api/upload-signed-agreement", upload.single("file"), (req, res) => {
           res.status(200).send(data);
         }
       });
-      
-
-      // res = await dynamoDB.put(putParams).promise();
-      // console.log("Successfully stored contract request", rest)
     } catch (error) {
       console.error("Error storing contract request:", error);
       res.status(500).send("Error storing contract request");
@@ -92,35 +80,36 @@ app.post("/api/upload-signed-agreement", upload.single("file"), (req, res) => {
   });
 });
 
-// Endpoint for fetching contract requests (admin dashboard)
-app.get("/api/contract-requests", async (req, res) => {
+app.get('/contract/contract-requests', async (req, res) => {
   try {
-    // Retrieve the list of contract requests from DynamoDB
     const scanParams = {
       TableName: CONTRACT_REQUESTS_TABLE_NAME,
     };
-
     const result = await dynamoDB.scan(scanParams).promise();
     const requests = result.Items;
-
     res.json({ requests });
   } catch (error) {
     console.error("Error fetching contract requests:", error);
     res.status(500).send("Error fetching contract requests");
   }
 });
-// Update the email sending logic
-app.post("/api/approve-contract", async (req, res) => {
+
+app.get('/contract', (req, res) => {
+  try {
+    res.status(200).send('Hello, World!');
+  } catch (error) {
+    console.error("Error sending greeting:", error);
+    res.status(500).send("Error sending greeting");
+  }
+});
+
+app.post('/contract/approve-contract', async (req, res) => {
   try {
     const { userEmail, link } = req.body;
-
-    // Implement logic to mark the request as approved in DynamoDB or your database
-
-    // Send an email notification to the user
     const mailOptions = {
-      Source: "HuuDang.Pham@moffitt.org", // Use the verified sender email
+      Source: "HuuDang.Pham@moffitt.org",
       Destination: {
-        ToAddresses: [userEmail], // Recipient's email
+        ToAddresses: [userEmail],
       },
       Message: {
         Subject: {
@@ -133,9 +122,7 @@ app.post("/api/approve-contract", async (req, res) => {
         },
       },
     };
-
     const sendEmailCommand = new SendEmailCommand(mailOptions);
-
     try {
       await sesClient.send(sendEmailCommand);
       console.log("Email sent successfully");
@@ -150,29 +137,22 @@ app.post("/api/approve-contract", async (req, res) => {
   }
 });
 
-
-app.post("/api/deny-contract", async (req, res) => {
+app.post('/contract/deny-contract', async (req, res) => {
   try {
     const { userEmail } = req.body;
-
-    // Implement logic to mark the request as denied in DynamoDB or your database
-
-    // Send an email notification to the user
     const transporter = nodemailer.createTransport({
-      service: "email-smtp.us-east-1.amazonaws.com", // Replace with your email service (e.g., Gmail)
+      service: "email-smtp.us-east-1.amazonaws.com",
       auth: {
         user: "deidara",
         pass: "@Phamhuudangt1k11",
       },
-    });
-
+    })
     const mailOptions = {
       from: "HuuDang.Pham@moffitt.org",
       to: userEmail,
       subject: "Contract Request Denied",
       text: "Your contract request has been denied.",
     };
-
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.error("Error sending email:", error);
@@ -187,7 +167,9 @@ app.post("/api/deny-contract", async (req, res) => {
     res.status(500).send("Error denying contract request");
   }
 });
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+
+app.listen(3000, function() {
+    console.log("App started");
 });
+
+module.exports = app;

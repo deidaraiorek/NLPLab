@@ -7,7 +7,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Fetch contract requests from your backend
-    axios.get('/api/contract-requests')
+    axios.get(`${process.env.REACT_APP_API_URL}/contract/contract-requests`)
       .then((response) => {
         setRequests(response.data.requests);
       })
@@ -28,7 +28,7 @@ const Dashboard = () => {
     if (selectedRequest) {
       // Send an API request to approve the selected request
       const { userEmail, link } = selectedRequest;
-      axios.post('/api/approve-contract', { userEmail, link })
+      axios.post(`${process.env.REACT_APP_API_URL}/contract/approve-contract`, { userEmail, link })
         .then((response) => {
           // Handle success (e.g., update UI)
           console.log('Request approved:', response.data);
@@ -44,7 +44,7 @@ const Dashboard = () => {
     if (selectedRequest) {
       // Send an API request to deny the selected request
       const { userEmail } = selectedRequest;
-      axios.post('/api/deny-contract', { userEmail })
+      axios.post(`${process.env.REACT_APP_API_URL}/contract/deny-contract`, { userEmail })
         .then((response) => {
           // Handle success (e.g., update UI)
           console.log('Request denied:', response.data);
