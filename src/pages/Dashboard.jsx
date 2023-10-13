@@ -7,6 +7,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Fetch contract requests from your backend
+    console.log(process.env.REACT_APP_API_URL)
     axios.get(`${process.env.REACT_APP_API_URL}/contract/contract-requests`)
       .then((response) => {
         setRequests(response.data.requests);
