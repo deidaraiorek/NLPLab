@@ -1,82 +1,55 @@
-// Publication.jsx
+// Research.jsx
 import React, { useState } from "react";
-import PublicationCard from "../components/PublicationCard";
-import { PUBLICATIONS_DATA } from "../data/data.js";
+import ProjectCard from "../components/ProjectCard"; // Make sure this component is adjusted to fit the new data structure
+import { PROJECTS_DATA } from "../data/data.js"; // New data file
 
-const Publication = () => {
-  const [filterYear, setFilterYear] = useState("All");
+const Research = () => {
+  const [filterProject, setFilterProject] = useState("All");
 
-  // Function to handle year filter change
-  const handleYearChange = (e) => {
-    setFilterYear(e.target.value);
+  // Function to handle project filter change
+  const handleProjectChange = (e) => {
+    setFilterProject(e.target.value);
   };
 
-  // Filter publications based on selected year
-  const filteredPublications = PUBLICATIONS_DATA.filter((pub) =>
-    filterYear === "All" ? true : pub.year.toString() === filterYear
+  // Filter projects based on selection
+  const filteredProjects = PROJECTS_DATA.filter((project) =>
+    filterProject === "All" ? true : project.title === filterProject
   );
 
-  const yearToSelect = PUBLICATIONS_DATA.reduce((yeartoAdd, pub) => {
-    const year = pub.year.toString();
-    if (!yeartoAdd.includes(year)) {
-      yeartoAdd.push(year);
-    }
-    return yeartoAdd;
-  }, []);
-
-  yearToSelect.sort((a, b) => b - a);
-
-  // Group publications by year
-  const publicationsByYear = filteredPublications.reduce((groups, pub) => {
-    const year = pub.year.toString();
-    if (!groups[year]) {
-      groups[year] = [];
-    }
-    groups[year].push(pub);
-    return groups;
-  }, {});
+  const projectOptions = PROJECTS_DATA.map((project) => project.title);
 
   return (
-    <div className="container rounded-lg mx-auto p-4 bg-[#fff]">
-      <h1 className=" text-center text-4xl  text-[#005a9b] font-bold p-4 border-b-4">
-        Publications
+    <div className="container mx-auto p-4 bg-white rounded-lg">
+      <h1 className="text-center text-4xl text-blue-800 font-bold p-4 border-b-4">
+        Research Projects
       </h1>
 
       <div className="my-4">
-        <label htmlFor="year" className="mr-2">
-          Filter by Year:
+        <label htmlFor="project" className="mr-2">
+          Filter by Project:
         </label>
         <select
-          id="year"
-          value={filterYear}
-          onChange={handleYearChange}
+          id="project"
+          value={filterProject}
+          onChange={handleProjectChange}
           className="p-2 rounded-md border-gray-300"
         >
           <option value="All">All</option>
-          {yearToSelect.map((year, index) => (
-            <option key={index} value={year}>
-              {year}
+          {projectOptions.map((title, index) => (
+            <option key={index} value={title}>
+              {title}
             </option>
           ))}
         </select>
       </div>
 
       <div>
-        {Object.keys(publicationsByYear)
-          .sort((a, b) => b - a)
-          .map((year) => (
-            <div key={year}>
-              <h2 className="text-2xl font-bold mb-2 border-b-2 border-gray-200 pb-2">
-                {year}
-              </h2>
-              {publicationsByYear[year].map((pub) => (
-                <PublicationCard key={pub.id} publication={pub} />
-              ))}
-            </div>
-          ))}
+        {filteredProjects.map((project, index) => (
+          <ProjectCard key={index} project={project} /> // Make sure the ResearchCard component accommodates the new project structure, including images and papers.
+        ))}
       </div>
     </div>
   );
 };
 
-export default Publication;
+export default Research;
