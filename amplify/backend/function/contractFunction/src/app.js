@@ -36,7 +36,7 @@ const upload = multer({
 
 app.post('/contract/upload-signed-agreement', upload.single('file'), (req, res) => {
   const params = {
-    Bucket: "mangutget",
+    Bucket: "contractsnlplab",
     Key: `${Date.now()}-${req.file.originalname}`,
     Body: req.file.buffer,
     ContentType: req.file.mimetype,

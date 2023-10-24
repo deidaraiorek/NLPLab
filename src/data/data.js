@@ -35,6 +35,7 @@ export const PROJECTS_DATA = [
         link: "https://ieeexplore.ieee.org/document/8218042",
       },
     ],
+    data: "Dang_Pham_Resume.pdf"
   },
   {
     title: "Literature Mining",
@@ -54,6 +55,7 @@ export const PROJECTS_DATA = [
         link: "Korkin D, Thieu T, Joshi S, Warre S. Mining Host-Pathogen Interactions [Internet]. Systems and Computational Biology - Molecular and Cellular Experimental Systems. InTech; 2011. Available from: http://dx.doi.org/10.5772/22016",
       },
     ],
+    data: null
   },
   {
     title: "Medical Billing",
@@ -65,6 +67,7 @@ export const PROJECTS_DATA = [
         link: "https://ieeexplore.ieee.org/document/9697942",
       },
     ],
+    data: null
   },
   {
     title: "Language Diversity",
@@ -76,6 +79,7 @@ export const PROJECTS_DATA = [
         link: "https://link.springer.com/chapter/10.1007/978-3-030-82199-9_1",
       },
     ],
+    data: null
   },
   {
     title: "Diabetic Retinopathy",
@@ -87,6 +91,7 @@ export const PROJECTS_DATA = [
         link: "https://www.sciencedirect.com/science/article/pii/S2352648322000770?via%3Dihub",
       },
     ],
+    data: null
   },
   {
     title: "Clinical Trial",
@@ -98,6 +103,7 @@ export const PROJECTS_DATA = [
         link: "https://austinpublishinggroup.com/biometrics/fulltext/biometrics-v4-id1033.pdf",
       },
     ],
+    data: null
   },
   {
     title: "Graphical Machine Learning",
@@ -109,5 +115,6 @@ export const PROJECTS_DATA = [
         link: "https://mospace.umsystem.edu/xmlui/handle/10355/49119",
       },
     ],
+    data: null
   },
 ];
