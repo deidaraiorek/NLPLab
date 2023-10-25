@@ -26,7 +26,7 @@ const AuthPage = () => {
     e.preventDefault();
 
     const backendUrl = process.env.REACT_APP_API_URL;
-    const url = `${backendUrl}/api/user/${isLogin ? "login" : "register"}`;
+    const url = `${backendUrl}/contract/user/${isLogin ? "login" : "register"}`;
 
     try {
       const response = await fetch(url, {

@@ -19,7 +19,7 @@
         "contractFunction": {
           "port": "8080",
           "deploymentBucketName": "amplify-amplify714606cb2cd04-staging-204128-deployment",
-          "s3Key": "amplify-builds/contractFunction-522b3646682b59635875-build.zip"
+          "s3Key": "amplify-builds/contractFunction-6b46506f395867615544-build.zip"
         }
       },
       "api": {
