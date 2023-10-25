@@ -37,6 +37,7 @@ const [userEmail, setUserEmail] = useState("");
     formData.append("research", research.title);
     formData.append("researchLink", research.data);
     console.log(process.env.REACT_APP_API_URL)
+    console.log(`${process.env.REACT_APP_API_URL}/contract/upload-signed-agreement`)
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/contract/upload-signed-agreement`,
