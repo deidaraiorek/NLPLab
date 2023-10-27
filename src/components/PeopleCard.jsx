@@ -1,4 +1,3 @@
-// PeopleCard.jsx
 import React, { useState } from "react";
 import InfoIcon from "@mui/icons-material/Info";
 import CloseIcon from "@mui/icons-material/Close";
