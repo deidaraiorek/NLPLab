@@ -23,7 +23,15 @@ const Header = () => {
   const handleClick = () => {
     setNav(!nav);
   };
-
+  const handleMobileMenuClick = (menu) => {
+    if (menu === "About") {
+      setShowAboutMenu(!showAboutMenu);
+      setShowToolsMenu(false);
+    } else if (menu === "Tools") {
+      setShowToolsMenu(!showToolsMenu);
+      setShowAboutMenu(false);
+    }
+  };
   const handleAboutClick = () => {
     setShowAboutMenu(!showAboutMenu);
     setShowToolsMenu(false);
@@ -159,19 +167,31 @@ const Header = () => {
             {baseActions.map((action) => (
               <li key={action.href} className="hover:bg-gray-200">
                 {action.type === "dropdown" ? (
-                  <div
-                    className="flex items-center justify-between p-4 border-b"
-                    onClick={
-                      action.label === "About"
-                        ? handleAboutClick
-                        : handleToolsClick
-                    }
-                  >
-                    <span className="text-lg font-medium text-[#005a9b]">
-                      {action.label}
-                    </span>
-                    <ExpandMoreIcon fontSize="medium" />
-                  </div>
+                  <>
+                    <div
+                      className="flex items-center justify-between p-4 border-b"
+                      onClick={() => handleMobileMenuClick(action.label)}
+                    >
+                      <span className="text-lg font-medium text-[#005a9b]">
+                        {action.label}
+                      </span>
+                      <ExpandMoreIcon fontSize="medium" />
+                    </div>
+                    {((action.label === "About" && showAboutMenu) || (action.label === "Tools" && showToolsMenu)) && (
+                      <ul className="border border-t-0">
+                        {action.subActions.map((subAction) => (
+                          <li key={subAction.label}>
+                            <a
+                              href={subAction.href}
+                              className="block p-4 text-lg font-medium text-center text-[#005a9b] border-b border-gray-300"
+                            >
+                              {subAction.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </>
                 ) : (
                   <a
                     href={action.href}
