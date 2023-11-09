@@ -6,6 +6,9 @@ import ThanhDuongImage from "../assets/images/ThanhDuong.jpg";
 import TuanDungImage from "../assets/images/TuanDung.jpg";
 import LongHungImage from "../assets/images/LongHung.jpg";
 import DangPhamImage from "../assets/images/DangPham.jpg";
+import MuntasirImage from "../assets/images/Muntasir.jpg";
+
+
 
 const People = () => {
   const fakeLabMembers = [
@@ -16,6 +19,14 @@ const People = () => {
       photo: ThanhThieuImage,
       type: "Principal",
       info: "Dr. Thieu received his Ph.D. in Computer Science from the University of Missouri-Columbia. Prior to Moffitt, he was an Assistant Professor in Computer Science Department at the Oklahoma State University, and further was a postdoc at the U.S. National Institutes of Health. He has been pursuing research in natural language processing, machine learning, and artificial intelligence with application in healthcare and education. Dr. Thieu has taught and mentored students and juniors at University of Missouri, NIH Clinical Center, ACT Inc., Oklahoma State University, and Moffitt Cancer Center. Having worked in academia, government, and industry, Dr. Thieu has developed capability to mentor and collaborate across educational backgrounds, ethnicities, genders, and origins.",
+    },
+    {
+      id: 2,
+      name: " Zitu Md Muntasir",
+      email:"thanh.duong@moffitt.org",
+      photo: MuntasirImage,
+      type: "Applied Research Scientist",
+      info:"Born and raised in Dhaka, Bangladesh, Muntasir pursued a B.Sc. in Computer Science at the Chittagong University of Engineering and Technology. During his undergrad years, he sparked an interest in Biomedical Science. This passion led him to become a graduate student in Bioinformatics at Indiana University, where he dedicated two years to the Center for Computational Biology and Bioinformatics. He later joined The Ohio State University and obtained his Ph.D. in Biomedical Informatics. His Ph.D. thesis focused on identifying adverse drug events from clinical narratives of electronic medical records using natural language processing and machine learning. Muntasir started working with Dr. Rollison and Dr. Thieu’s team at Moffitt Cancer Center in 2023 as an Applied Research Scientist. He became part of many projects where he used computer tools, like natural language processing and machine learning, on health data with the aim to find ways to beat cancer. In his free time, Muntasir loves traveling, cooking, and spending time with his family."
     },
 
     {
@@ -55,33 +66,27 @@ const People = () => {
     },
   ];
 
-  const positionOrder = ["Principal", "PhD Student", "Undergraduate Student"];
+  const positionOrder = ["Principal", "Applied Research Scientist", "PhD Student", "Undergraduate Student"];
 
   return (
-    <div className="container rounded-lg mx-auto p-4 bg-[#fff]">
-      <div>
-        <h1 className=" text-center text-4xl  text-[#005a9b] font-bold p-4 border-b-4 ">
+    <div className="container mx-auto p-4 bg-white rounded-lg">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-[#005a9b] p-4 border-b-4">
           People
         </h1>
       </div>
       {positionOrder.map((position) => {
-        const members = fakeLabMembers.filter(
-          (member) => member.type === position
-        );
+        const members = fakeLabMembers.filter((member) => member.type === position);
         return (
-          <div
-            key={position}
-            className="flex flex-row justify-center items-center text-center mb-4"
-          >
-            <div className=" p-4">
-              <h2 className="text-2xl font-semibold mb-2 underline underline-offset-8">
-                {position}
-              </h2>
-              <div className="flex gap-4">
-                {members.map((member) => (
-                  <PeopleCard key={member.id} member={member} />
-                ))}
-              </div>
+          <div key={position} className="mb-4">
+            <h2 className="text-2xl font-semibold mb-2 text-center underline underline-offset-8">
+              {position}
+            </h2>
+            {/* Ensure this container can wrap and center items */}
+            <div className="flex flex-wrap gap-4 justify-center">
+              {members.map((member) => (
+                <PeopleCard key={member.id} member={member} />
+              ))}
             </div>
           </div>
         );
