@@ -35,7 +35,7 @@ export const PROJECTS_DATA = [
         link: "https://ieeexplore.ieee.org/document/8218042",
       },
     ],
-    data: "Dang_Pham_Resume.pdf"
+    data: "mobility.zip"
   },
   {
     title: "Literature Mining",
