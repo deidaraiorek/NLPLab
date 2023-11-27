@@ -85,7 +85,7 @@ exports.approveContract = async (req, res) => {
         const urlParams = {
           Bucket: 'projectdatanlplab', // appropriate bucket containing the project data
           Key: projectName, // this assumes the projectName includes the file type extension
-          Expires: 30, // URL expiry time in seconds
+          Expires: 86400, // URL expiry time in seconds
         };
         const presignedUrl = await s3.getSignedUrlPromise('getObject', urlParams);
     
