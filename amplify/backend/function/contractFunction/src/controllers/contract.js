@@ -19,22 +19,23 @@ const CONTRACT_REQUESTS_TABLE_NAME = "ContractRequests"; // DynamoDB table name
 
 // POST route for uploading signed agreements
 exports.uploadSignedAgreement = (req, res) => {
-    const params = {
-        Bucket: "contractsnlplab", // Updated with actual bucket name
-        Key: `${Date.now()}-${req.file.originalname}`,
-        Body: req.file.buffer,
-        ContentType: req.file.mimetype,
-        ACL: "public-read",
-      };
-    
-      s3.upload(params, async (err, data) => {
-        if (err) {
+  const params = {
+    Bucket: "contractsnlplab", 
+    Key: `${Date.now()}-${req.file.originalname}`,
+    Body: req.file.buffer, 
+    ContentType: req.file.mimetype,
+    ACL: "public-read",
+  };
+  console.log(req.file, params);
+
+  s3.upload(params, async (err, data) => {
+      if (err) {
           console.log(err);
           return res.status(500).send(err);
-        }
-    
-        const requestId = uuidv4(); // Unique request ID
-        const request = {
+      }
+
+      const requestId = uuidv4();
+      const request = {
           id: requestId,
           fileName: req.file.originalname,
           fileUrl: data.Location,
@@ -42,23 +43,23 @@ exports.uploadSignedAgreement = (req, res) => {
           userEmail: req.body.userEmail,
           title: req.body.research,
           link: req.body.researchLink,
-        };
-    
-        const putParams = {
+      };
+
+      const putParams = {
           TableName: CONTRACT_REQUESTS_TABLE_NAME,
           Item: request,
-        };
-    
-        dynamoDB.put(putParams, function(err, data) {
+      };
+
+      dynamoDB.put(putParams, function(err, data) {
           if (err) {
-            console.error("Error storing contract request:", err);
-            return res.status(500).send("Error storing contract request");
+              console.error("Error storing contract request:", err);
+              return res.status(500).send("Error storing contract request");
           } else {
-            console.log("Successfully stored contract request", data);
-            res.status(200).send(data);
+              console.log("Successfully stored contract request", data);
+              res.status(200).send(data);
           }
-        });
       });
+  });
 };
 
 // GET route for fetching contract requests
