@@ -8,6 +8,7 @@ const Dashboard = () => {
   const [selectedRequest, setSelectedRequest] = useState(null);
 
   const handleCardClick = (request) => {
+    console.log('Clicked on request:', request);
     setSelectedRequest(request);
   };
 
@@ -18,9 +19,9 @@ const Dashboard = () => {
   const handleApprove = async (event) => {
     event.stopPropagation();
     if (selectedRequest) {
-      const { userEmail, link, id } = selectedRequest;
+      const { userEmail, link, id, userName } = selectedRequest;
       try {
-        await axios.post(`${process.env.REACT_APP_API_URL}/contract/approve-contract`, { userEmail, projectName: link, id });
+        await axios.post(`${process.env.REACT_APP_API_URL}/contract/approve-contract`, { userEmail, projectName: link, id, userName });
         toast.success('Request approved successfully!');
         removeRequest(id);  //
         handleModalClose();
@@ -34,11 +35,11 @@ const Dashboard = () => {
   const handleDeny = async (event) => {
     event.stopPropagation();
     if (selectedRequest) {
-      const { userEmail, id } = selectedRequest;
+      const { userEmail, id, userName } = selectedRequest;
       try {
-        await axios.post(`${process.env.REACT_APP_API_URL}/contract/deny-contract`, { userEmail, id });
+        await axios.post(`${process.env.REACT_APP_API_URL}/contract/deny-contract`, { userEmail, id, userName });
         toast.success('Request denied successfully!');
-        removeRequest(id);  // <-- remove the request from local state
+        removeRequest(id);  
         handleModalClose();
       } catch (error) {
         console.error('Error denying request:', error);

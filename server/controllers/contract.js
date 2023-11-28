@@ -31,6 +31,7 @@ exports.uploadSignedAgreement = (req, res) => {
         ContentType: req.file.mimetype,
         ACL: "public-read",
     };
+    console.log(req);
 
     s3.upload(params, async (err, data) => {
         if (err) {
@@ -83,7 +84,7 @@ exports.getContractRequests = async (req, res) => {
 
 exports.approveContract = async (req, res) => {
     try {
-        const { userEmail, projectName } = req.body;
+        const { userEmail, projectName, userName } = req.body;
 
         // Generate a presigned URL
         const s3 = new AWS.S3();
@@ -136,7 +137,7 @@ exports.approveContract = async (req, res) => {
 
 exports.denyContract = async (req, res) => {
     try {
-        const { userEmail } = req.body;
+        const { userEmail, userName } = req.body;
 
         // Set up the content for the denial email
         const mailOptions = {
