@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/contract": {
+      "name": "/contract",
+      "lambdaFunction": "contractFunction",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
