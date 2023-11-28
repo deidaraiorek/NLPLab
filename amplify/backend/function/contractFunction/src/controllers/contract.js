@@ -80,7 +80,7 @@ exports.getContractRequests = async (req, res) => {
 // POST route for approving contracts
 exports.approveContract = async (req, res) => {
     try {
-        const { userEmail, projectName } = req.body;
+        const { userEmail, projectName, userName } = req.body;
     
         // Generate presigned URL for project data
         const urlParams = {
@@ -89,7 +89,7 @@ exports.approveContract = async (req, res) => {
           Expires: 86400, // URL expiry time in seconds
         };
         const presignedUrl = await s3.getSignedUrlPromise('getObject', urlParams);
-    
+        const approvalMessage = `Dear ${userName},\n\nYour request has been approved. You can access it here: ${presignedUrl}`;
         // Setup SES email
         const mailOptions = {
           Source: "HuuDang.Pham@moffitt.org", // sender's email address
@@ -98,7 +98,7 @@ exports.approveContract = async (req, res) => {
             Subject: { Data: "NLP Lab: Request Approved" }, // email subject
             Body: {
               Text: {
-                Data: `Your request has been approved. You can access it here: ${presignedUrl}`, // email body with URL
+                Data: approvalMessage, // email body
               },
             },
           },
@@ -127,8 +127,8 @@ exports.approveContract = async (req, res) => {
 // POST route for denying contracts
 exports.denyContract = async (req, res) => {
     try {
-        const { userEmail } = req.body;
-        // Set up SES email content
+        const { userEmail, userName } = req.body;
+        const denialMessage = `Dear ${userName},\n\nYour request has been denied.`;
         const mailOptions = {
           Source: "HuuDang.Pham@moffitt.org", // sender's email address
           Destination: { ToAddresses: [userEmail] }, // recipient's email address
@@ -136,7 +136,7 @@ exports.denyContract = async (req, res) => {
             Subject: { Data: "NLP Lab: Request Denied" }, // email subject
             Body: {
               Text: {
-                Data: "Your request has been denied.", // email body
+                Data: denialMessage 
               },
             },
           },

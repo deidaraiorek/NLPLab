@@ -15,34 +15,8 @@ const SignatureModal = ({ isOpen, onClose, research }) => {
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0]; // Get the first file
-    if (selectedFile) {
         setFile(selectedFile);
         setFileName(selectedFile.name);
-
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          const base64String = event.target.result.split(',')[1]; // Remove the data type prefix
-          const binary = atob(base64String); // Decode base64
-          const bytes = new Uint8Array(binary.length);
-      
-          for (let i = 0; i < binary.length; i++) {
-              bytes[i] = binary.charCodeAt(i);
-          }
-      
-          const blob = new Blob([bytes], {type: 'application/pdf'});
-          const blobUrl = URL.createObjectURL(blob);
-          window.open(blobUrl); // This will open the PDF in a new tab
-      };
-
-        // Ensure selectedFile is a Blob or File object
-        if (selectedFile instanceof Blob) {
-            reader.readAsDataURL(selectedFile);
-        } else {
-            console.error("Selected file is not a Blob or File type");
-        }
-    } else {
-        console.error("No file selected");
-    }
   };
 
   const handleSubmit = async (e) => {
