@@ -85,54 +85,47 @@ exports.getContractRequests = async (req, res) => {
 exports.approveContract = async (req, res) => {
     try {
         const { userEmail, projectName, userName } = req.body;
-
-        // Generate a presigned URL
-        const s3 = new AWS.S3();
+        console.log(userEmail, projectName, userName, req.body);
+        // Generate presigned URL for project data
         const urlParams = {
-            Bucket: 'projectdatanlplab',
-            Key: projectName,  // As projectName includes the extension already
-            Expires: 30
+          Bucket: 'projectdatanlplab', // appropriate bucket containing the project data
+          Key: projectName, // this assumes the projectName includes the file type extension
+          Expires: 86400, // URL expiry time in seconds
         };
         const presignedUrl = await s3.getSignedUrlPromise('getObject', urlParams);
-
-        // Send email with the presigned URL
+        const approvalMessage = `Dear ${userName},\n\nYour request has been approved. You can access it here: ${presignedUrl}`;
+        // Setup SES email
         const mailOptions = {
-            Source: "HuuDang.Pham@moffitt.org",
-            Destination: {
-                ToAddresses: [userEmail],
+          Source: "HuuDang.Pham@moffitt.org", // sender's email address
+          Destination: { ToAddresses: [userEmail] }, // recipient's email address
+          Message: {
+            Subject: { Data: "NLP Lab: Request Approved" }, // email subject
+            Body: {
+              Text: {
+                Data: approvalMessage, // email body
+              },
             },
-            Message: {
-                Subject: {
-                    Data: "NLP Lab: Request Approved",
-                },
-                Body: {
-                    Text: {
-                        Data: `Your request has been approved. You can access it here: ${presignedUrl}`,
-                    },
-                },
-            },
+          },
         };
-
+    
         const sendEmailCommand = new SendEmailCommand(mailOptions);
-        await sesClient.send(sendEmailCommand);
+        await sesClient.send(sendEmailCommand); // Send email
         console.log("Email sent successfully");
-        const requestId = req.body.id;
-
+    
+        // Delete the approved contract request from DynamoDB
+        const requestId = req.body.id; // Unique request ID from body
         const deleteParams = {
-            TableName: CONTRACT_REQUESTS_TABLE_NAME,
-            Key: {
-                "id": requestId
-            }
+          TableName: CONTRACT_REQUESTS_TABLE_NAME,
+          Key: { "id": requestId },
         };
-
-        // Deleting the contract request after it's approved.
-        await dynamoDB.delete(deleteParams).promise();
+    
+        await dynamoDB.delete(deleteParams).promise(); // Delete operation
         console.log("Contract request deleted successfully after approval.");
         return res.status(200).send("Email sent successfully");
-    } catch (error) {
+      } catch (error) {
         console.error("Error approving contract request:", error);
         return res.status(500).send("Error approving contract request");
-    }
+      }
 };
 
 exports.denyContract = async (req, res) => {

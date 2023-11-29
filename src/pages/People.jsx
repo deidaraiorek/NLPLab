@@ -23,7 +23,7 @@ const People = () => {
     {
       id: 2,
       name: " Zitu Md Muntasir",
-      email:"thanh.duong@moffitt.org",
+      email:"mdmuntasir.zitu@moffitt.org",
       photo: MuntasirImage,
       type: "Applied Research Scientist",
       info:"Born and raised in Dhaka, Bangladesh, Muntasir pursued a B.Sc. in Computer Science at the Chittagong University of Engineering and Technology. During his undergrad years, he sparked an interest in Biomedical Science. This passion led him to become a graduate student in Bioinformatics at Indiana University, where he dedicated two years to the Center for Computational Biology and Bioinformatics. He later joined The Ohio State University and obtained his Ph.D. in Biomedical Informatics. His Ph.D. thesis focused on identifying adverse drug events from clinical narratives of electronic medical records using natural language processing and machine learning. Muntasir started working with Dr. Rollison and Dr. Thieu’s team at Moffitt Cancer Center in 2023 as an Applied Research Scientist. He became part of many projects where he used computer tools, like natural language processing and machine learning, on health data with the aim to find ways to beat cancer. In his free time, Muntasir loves traveling, cooking, and spending time with his family."
