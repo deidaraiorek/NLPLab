@@ -55,13 +55,13 @@ exports.uploadSignedAgreement = (req, res) => {
           console.log("Successfully stored contract request", data);
   
           // Send notification email to admin
-          const adminEmail = "HuuDang.Pham@moffitt.org";
+          const adminEmail = "TuanDung.Le@moffitt.org";
           const notificationMessage = `New contract request uploaded:\n\nUser: ${req.body.userName}\nEmail: ${req.body.userEmail}\nTitle: ${req.body.research}`;
           const mailOptions = {
-            Source: adminEmail,
+            Source: "HuuDang.Pham@moffitt.org",
             Destination: { ToAddresses: [adminEmail] },
             Message: {
-              Subject: { Data: "New Contract Request Notification" },
+              Subject: { Data: "New Request Notification" },
               Body: {
                 Text: { Data: notificationMessage },
               },
