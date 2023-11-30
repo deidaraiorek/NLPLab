@@ -22,7 +22,7 @@ const SignatureModal = ({ isOpen, onClose, research }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) {
-      toast.error('Please upload a signed agreement before submitting.');
+      toast.error('Please upload a confirmation email (PDF File) before submitting.');
       return;
     }
     if (!userName || !userEmail) {
@@ -66,7 +66,7 @@ const SignatureModal = ({ isOpen, onClose, research }) => {
             <li>Create an account on the DBMI Data Portal.</li>
             <li>Request access to the n2c2 dataset.</li>
             <li>Once access is granted, submit a copy of the confirmation email (PDF Format).</li>
-            <li>Upon confirming your access, we will provide the dataset.</li>
+            <li>Upon confirming your access, we will send you an email with a link to download the dataset. Please note that the link will expire in 24 hours.</li>
           </ul>
         </div>
 
